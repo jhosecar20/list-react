@@ -19,10 +19,19 @@ function App() {
   const deleteTask = (id) => {
     setTasks(tasks.filter(task => task.id !== id));
   };
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter(task => task.completed).length;
+  const pendingTasks = totalTasks - completedTasks;
 
   return (
     <div className="app-container">
       <h1>Todo List</h1>
+      <div className="stats">
+        <p>Total: {totalTasks}</p>
+        <p>Completadas: {completedTasks}</p>
+        <p>Pendientes: {pendingTasks}</p>
+      </div>
+
       <TodoForm addTask={addTask} />
       <TodoList
         tasks={tasks}

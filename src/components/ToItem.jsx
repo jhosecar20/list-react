@@ -11,7 +11,12 @@ function TodoItem({ task, toggleTask, deleteTask }) {
         />
         <span>{task.text}</span>
       </label>
-      <button onClick={() => deleteTask(task.id)}>Eliminar</button>
+      <button onClick={() => {
+        if (confirm('¿Estás seguro de eliminar esta tarea?')) {
+            deleteTask(task.id)
+        }
+      }}>Eliminar</button>
+      
     </li>
   );
 }
