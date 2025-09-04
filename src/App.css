@@ -40,3 +40,30 @@
 .read-the-docs {
   color: #888;
 }
+
+.app-container {
+  max-width: 600px;
+  margin: auto;
+  padding: 1rem;
+  font-family: sans-serif;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: gray;
+}
+
+button {
+  margin-left: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .app-container {
+    padding: 0.5rem;
+  }
+
+  input {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
