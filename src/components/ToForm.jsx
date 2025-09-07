@@ -1,13 +1,14 @@
-import { useState } from 'react';
+// src/components/ToForm.jsx
+import React, { useState } from "react";
 
-function TodoForm({ addTask }) {
-  const [input, setInput] = useState('');
+function ToForm({ onAdd }) {
+  const [text, setText] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (input.trim()) {
-      addTask(input);
-      setInput('');
+    if (text.trim()) {
+      onAdd(text.trim());
+      setText("");
     }
   };
 
@@ -15,14 +16,13 @@ function TodoForm({ addTask }) {
     <form onSubmit={handleSubmit}>
       <input
         type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Nueva tarea"
+        placeholder="Escribe una nueva tarea..."
+        value={text}
+        onChange={(e) => setText(e.target.value)}
       />
       <button type="submit">Agregar</button>
     </form>
   );
 }
 
-export default TodoForm;
-
+export default ToForm;

@@ -1,48 +1,74 @@
-import { useState } from 'react';
-import TodoForm from './components/ToForm';
-import TodoList from './components/ToList';
-import './App.css';
+// src/TodoApp.jsx
+import React, { useState, useEffect } from "react";
+import ToForm from "./components/ToForm";
+import ToList from "./components/ToList";
 
-
-
-function App() {
+function TodoApp() {
   const [tasks, setTasks] = useState([]);
+  const [filter, setFilter] = useState("all");
+
+  useEffect(() => {
+    const storedTasks = JSON.parse(localStorage.getItem("tasks"));
+    if (storedTasks) setTasks(storedTasks);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   const addTask = (text) => {
-    const newTask = { id: Date.now(), text, completed: false };
+    const newTask = {
+      id: Date.now(),
+      text,
+      completed: false,
+    };
     setTasks([...tasks, newTask]);
   };
 
-  const toggleTask = (id) => {
-    setTasks(tasks.map(task =>
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ));
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id));
   };
 
-  const deleteTask = (id) => {
-    setTasks(tasks.filter(task => task.id !== id));
+  const toggleTask = (id) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    );
   };
-  const totalTasks = tasks.length;
-  const completedTasks = tasks.filter(task => task.completed).length;
-  const pendingTasks = totalTasks - completedTasks;
+
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === "completed") return task.completed;
+    if (filter === "pending") return !task.completed;
+    return true;
+  });
+
+  const totaltask=tasks.length;
+  const CompletedTaks=tasks.filter(task=>task.completed).length;
+  const pendingTaks=totaltask-CompletedTaks;
 
   return (
-    <div className="app-container">
-      <h1>Todo List</h1>
-      <div className="stats">
-        <p>Total: {totalTasks}</p>
-        <p>Completadas: {completedTasks}</p>
-        <p>Pendientes: {pendingTasks}</p>
+    <div className="todo-container">
+      <h1>Mis Tareas</h1>
+      <p>total: {totaltask}</p>
+      <p>completadas: {CompletedTaks}</p>
+      <p>pendientes: {pendingTaks}</p>
+
+      <ToForm onAdd={addTask} />
+
+      <div className="filter-buttons">
+        <button onClick={() => setFilter("all")}>Todas</button>
+        <button onClick={() => setFilter("completed")}>Completadas</button>
+        <button onClick={() => setFilter("pending")}>Pendientes</button>
       </div>
 
-      <TodoForm addTask={addTask} />
-      <TodoList
-        tasks={tasks}
-        toggleTask={toggleTask}
-        deleteTask={deleteTask}
+      <ToList
+        tasks={filteredTasks}
+        onDelete={deleteTask}
+        onToggle={toggleTask}
       />
     </div>
   );
 }
 
-export default App;
+export default TodoApp;

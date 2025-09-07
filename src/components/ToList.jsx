@@ -1,22 +1,20 @@
-import TodoItem from './ToItem';
+// src/components/ToList.jsx
+import React from "react";
+import ToItem from "./ToItem";
 
-function TodoList({ tasks, toggleTask, deleteTask }) {
-  if (tasks.length === 0) {
-    return <p>No hay tareas pendientes.</p>;
-  }
-
+function ToList({ tasks, onToggle, onDelete }) {
   return (
-    <ul>
+    <ul className="todo-list">
       {tasks.map((task) => (
-        <TodoItem
+        <ToItem
           key={task.id}
           task={task}
-          toggleTask={toggleTask}
-          deleteTask={deleteTask}
+          toggleTask={onToggle}
+          deleteTask={onDelete}
         />
       ))}
     </ul>
   );
 }
 
-export default TodoList;
+export default ToList;
